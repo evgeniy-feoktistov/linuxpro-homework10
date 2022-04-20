@@ -13,8 +13,31 @@
 сайт должен слушать на нестандартном порту - 8080, для этого использовать переменные в Ansible.
 
 ***
+### Инструкция или быстрая проверка
+```
+1. Клонируем/копируем папку Ansible и заходим в нее
+2. Запускаем VM
+Ansible$ vagrant up
+3. Первым запускаем playbook со всеми тасками в одном
+Ansible$ ansible-playbook nginx.yml
+...
+nginx                      : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+...
+4. Проверяем доступность nginx на 8080 порту
+curl http://192.168.56.150:8080
+5. Перезагружаем VM
+Ansible$ vagrant destroy
+Ansible$ vagrant up
+6. Запускай плэйбук с ролью
+Ansible$ ansible-playbook nginx-role.yml
+...
+nginx                      : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+...
+7. Проверяем доступность nginx на 8080 порту
+curl http://192.168.56.150:8080
+```
 
-### Установка Ansible
+### Установка Ansible и работа с ним
 
 Проверяем версию Python
 ```
@@ -390,7 +413,7 @@ $ cat nginx.yml
       systemd:
         name: nginx
         state: restarted
-        enable: yes
+        enabled: yes
 
     - name: reload nginx
       systemd:
@@ -528,7 +551,7 @@ Ansible$ cat roles/nginx-role/handlers/main.yml
       systemd:
         name: nginx
         state: restarted
-        enable: yes
+        enabled: yes
 
     - name: reload nginx
       systemd:
@@ -560,5 +583,6 @@ nginx                      : ok=4    changed=0    unreachable=0    failed=0    s
 Done. Имеем и отдельный плэйбук со всеми тасками все в одном и плэйбук с ролью.
 
 З.Ы.
-Для наглядности nginx.conf.j2 содержит разные данные.
+Для наглядности nginx.conf.j2 содержит разные данные, проверял, дейстивтльно ли он видит шаблон в нужном месте.
+
 
